@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% block body %}
+
+<div class="row">
+    <div class="col-md-auto">
+        <h3>Kayıt Ol</h3>
+        <hr>
+        <form method="post">
+            {% csrf_token %}<!--siteye yapılacak cross site request force ataklarını önlemek için kullanılır,form olan heryerde kullan -->
+            {{form|crispy}}
+            <br>
+            <button type="submit" class="btn btn-danger">Kayıt Ol</button>
+        </form>
+    </div>
+</div>
+{% endblock body %}

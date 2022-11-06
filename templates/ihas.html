@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h3>İHALAR</h3>
+<hr>
+
+<div class="searchbar">
+    <div class="row">
+        <form >
+            {% csrf_token %}<!--siteye yapılacak cross site request force ataklarını önlemek için kullanılır ,form olan heryerde kullan-->
+            <input type="text" name="keyword" class="input-sm" maxlength="20" placeholder="Ara...">
+            <button type="submit" class="btn btn-danger">Ara</button>
+        </form>
+    </div>
+    <!--Filtreleme alanı, arama alanı ile benzerdir.
+        İstenilen özelliklere göre alan açılır ve a etiketleri ile görünüm sağlanır
+        Basılan etiketler sayesinde gönderilen uniqe key ile view.py dosyası ihas fonksiyonu içerisinde
+        filter() fonksiiyonu ile gönderilen obje ile burada kontrolü yapılarak gösterilebilir.-->
+</div>
+
+<div class="container-iha">
+
+    <!--Dikkat: Eğer arayacağın ürünlerin aynı sayfada gösterilmesini istiyorsan,,
+    search-input 'a name parametresini verebilirsin. Fakat bu güvenilir değildir. Çünkü fonksiyonundan bir şifre geliyorsa 
+    otomatik olarak yapılan GET request ile görünen ilgili elementte gönderdiğin şifre görünecektir.-->
+    
+    {% if ihas %}
+    
+    {% for iha in ihas %}
+    
+    <div class="container-all">
+        {% if iha.iha_image %}
+            <img class="img-fluid rounded" src="{{iha.iha_image.url}}" alt="">
+        {% else %}
+            <img class="img-fluid rounded" src="/static/images/nouser.png" alt="">
+        {% endif %}
+        <div class="specs">
+            <h1>Kiralayan: {{iha.renter}}</h1>
+            <h2>Model: {{iha.brand}}</h2>
+            <h6>Ağırlık: {{iha.weight}} Kg</h6>
+            <h4>Kategori: {{iha.category}}</h4>
+            <h5>Fiyat: {{iha.money}} $</h5>
+            <span>Yük. Zamanı: {{iha.created_date}}</span>
+        </div>
+    </div>
+    {% endfor %}
+    
+    {% else %}
+    
+    <div class="alert alert-danger">
+        Ürün Bulunamadı...
+    </div>
+    
+    {% endif %}
+    
+    
+    
+    {% endblock body %}
+</div>
